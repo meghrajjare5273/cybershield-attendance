@@ -24,7 +24,7 @@ export function CourseForm() {
             </div>
             <div>
               <Label htmlFor="description">Description</Label>
-              <Input id="description" name="description" />
+              <Input id="description" name="description" required />
             </div>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Adding..." : "Add Course"}

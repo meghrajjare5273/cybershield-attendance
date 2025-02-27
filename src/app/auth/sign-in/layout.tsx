@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CyberShield Club",
-  description: "Club For Cybersecurity",
+  title: "CyberShield | Authentication",
+  description: "Login To Your Admin Account",
 };
 
 export default function RootLayout({

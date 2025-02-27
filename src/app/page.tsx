@@ -1,8 +1,8 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import Image from "next/image";
+// import Image from "next/image";
 import { redirect } from "next/navigation";
-import { authClient } from "@/lib/auth-client"; //import the auth client
+// import { authClient } from "@/lib/auth-client"; //import the auth client
 
 export default async function Home() {
   const session = await auth.api.getSession({

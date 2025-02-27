@@ -31,14 +31,25 @@ export function LoginForm({
     const password = passwordInput.value;
 
     try {
-      const response = await authClient.signIn.email({
-        email,
-        password,
-      });
+      const response = await authClient.signIn.email(
+        {
+          email,
+          password,
+        },
+        {
+          onSuccess: () => {
+            router.push("/admin");
+            console.log(response);
+          },
+          onError: () => {
+            throw new Error("Login Failed");
+          },
+        }
+      );
 
       // Handle successful login
-      console.log("Login successful", response);
-      router.push("/admin");
+      // console.log("Login successful", response);
+      // router.push("/admin");
       // Redirect or update UI based on successful login
     } catch (error) {
       // Handle login error

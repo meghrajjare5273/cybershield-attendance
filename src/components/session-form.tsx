@@ -14,7 +14,7 @@ export function SessionForm({ courseId }: { courseId: string }) {
 
   const handleSubmit = async (formData: FormData) => {
     setIsSubmitting(true);
-    setMessage(null);
+    setMessage(null)
     const result = await addCourseSession(formData, courseId);
     setIsSubmitting(false);
     setMessage(result.message);

@@ -4,29 +4,27 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-export async function addCourseSession(formData: FormData, courseId: string) {
-  "use server";
-  const { prisma } = await import("@/lib/prisma");
-  const { auth } = await import("@/lib/auth");
-  const { headers } = await import("next/headers");
-
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) throw new Error("Unauthorized");
-
-  const date = new Date(formData.get("date") as string);
-
-  await prisma.courseSession.create({ data: { courseId, date } });
-}
+import { addCourseSession } from "@/actions/session-actions";
+import { useRouter } from "next/navigation";
 
 export function SessionForm({ courseId }: { courseId: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const router = useRouter();
+
+  const handleSubmit = async (formData: FormData) => {
+    setIsSubmitting(true);
+    setMessage(null);
+    const result = await addCourseSession(formData, courseId);
+    setIsSubmitting(false);
+    setMessage(result.message);
+    if (result.success) {
+      router.refresh();
+    }
+  };
 
   return (
-    <form
-      action={(formData) => addCourseSession(formData, courseId)}
-      onSubmit={() => setIsSubmitting(true)}
-    >
+    <form action={handleSubmit}>
       <div className="flex space-x-4">
         <div>
           <Label htmlFor="date">Session Date</Label>
@@ -36,6 +34,7 @@ export function SessionForm({ courseId }: { courseId: string }) {
           {isSubmitting ? "Adding..." : "Add Session"}
         </Button>
       </div>
+      {message && <p className="text-sm text-muted-foreground mt-2">{message}</p>}
     </form>
   );
 }

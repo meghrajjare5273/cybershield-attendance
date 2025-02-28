@@ -4,7 +4,7 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <Link
           href="/admin/students"
           className="p-4 border rounded hover:bg-accent"
@@ -16,12 +16,6 @@ export default function AdminDashboard() {
           className="p-4 border rounded hover:bg-accent"
         >
           Manage Courses
-        </Link>
-        <Link
-          href="/admin/workshops"
-          className="p-4 border rounded hover:bg-accent"
-        >
-          Manage Workshops
         </Link>
       </div>
     </div>

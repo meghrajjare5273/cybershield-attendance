@@ -11,5 +11,11 @@ export async function addCourse(formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
 
-  await prisma.course.create({ data: { name, description } });
+  try {
+    await prisma.course.create({ data: { name, description } });
+    return { success: true, message: "Course added successfully" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Failed to add course" };
+  }
 }

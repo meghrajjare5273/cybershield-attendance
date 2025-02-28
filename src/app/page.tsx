@@ -12,6 +12,13 @@ export default async function Home() {
   if (session) {
     return redirect("/admin");
   } else {
+    // await auth.api.signUpEmail({
+    //   body: {
+    //     name: "CyberShield",
+    //     email: "cybershield@aissmsioit.org",
+    //     password: "Hackydaddy@1/0",
+    //   },
+    // });
     return redirect("auth/sign-in");
   }
 }

@@ -1,4 +1,3 @@
-// src/actions/student-actions.ts
 "use server";
 
 import { prisma } from "@/lib/prisma";
@@ -15,7 +14,13 @@ export async function addStudent(formData: FormData) {
   const phone = formData.get("phone") as string;
   const rollno = formData.get("rollno") as string;
 
-  await prisma.student.create({
-    data: { name, email, branch, phone, rollno },
-  });
+  try {
+    await prisma.student.create({
+      data: { name, email, branch, phone, rollno },
+    });
+    return { success: true, message: "Student added successfully" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Failed to add student" };
+  }
 }

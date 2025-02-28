@@ -5,10 +5,24 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { addStudent } from "@/actions/student-actions"; 
+import { addStudent } from "@/actions/student-actions";
+import { useRouter } from "next/navigation";
 
 export function StudentForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const router = useRouter();
+
+  const handleSubmit = async (formData: FormData) => {
+    setIsSubmitting(true);
+    setMessage(null);
+    const result = await addStudent(formData);
+    setIsSubmitting(false);
+    setMessage(result.message);
+    if (result.success) {
+      router.refresh();
+    }
+  };
 
   return (
     <Card>
@@ -16,7 +30,7 @@ export function StudentForm() {
         <CardTitle>Add New Student</CardTitle>
       </CardHeader>
       <CardContent>
-        <form action={addStudent} onSubmit={() => setIsSubmitting(true)}>
+        <form action={handleSubmit}>
           <div className="space-y-4">
             <div>
               <Label htmlFor="name">Name</Label>
@@ -41,6 +55,7 @@ export function StudentForm() {
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Adding..." : "Add Student"}
             </Button>
+            {message && <p className="text-sm text-muted-foreground">{message}</p>}
           </div>
         </form>
       </CardContent>

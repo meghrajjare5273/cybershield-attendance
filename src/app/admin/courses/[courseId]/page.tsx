@@ -7,9 +7,9 @@ import Link from "next/link";
 export default async function CourseDetailPage({
   params,
 }: {
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>; // Type params as a Promise
 }) {
-  const courseId = await params.courseId;
+  const { courseId } = await params; // Await params to get the object
   const course = await prisma.course.findUnique({
     where: { id: courseId },
     include: { sessions: true, enrollments: { include: { student: true } } },

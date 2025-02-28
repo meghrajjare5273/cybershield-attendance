@@ -7,10 +7,11 @@ import { redirect } from "next/navigation";
 export default async function AttendancePage({
   params,
 }: {
-  params: { courseId: string; sessionId: string };
+  params: Promise<{ courseId: string; sessionId: string }>; // Type params as a Promise
 }) {
+  const { courseId, sessionId } = await params; // Await params to get the object
   const session = await prisma.courseSession.findUnique({
-    where: { id: await params.sessionId },
+    where: { id: sessionId }, // Use sessionId directly
     include: {
       course: { include: { enrollments: { include: { student: true } } } },
       attendances: true,
@@ -26,9 +27,9 @@ export default async function AttendancePage({
 
   const handleSubmit = async (formData: FormData) => {
     "use server";
-    const result = await saveCourseAttendance(formData, params.sessionId);
+    const result = await saveCourseAttendance(formData, sessionId); // Use sessionId variable
     if (result.success) {
-      redirect(`/admin/courses/${params.courseId}`);
+      redirect(`/admin/courses/${courseId}`); // Use courseId variable
     }
   };
 
